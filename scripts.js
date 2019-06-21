@@ -1,27 +1,67 @@
+let money,time;
 
-let money = prompt('Ваш бюджет на месяц?', ''),
+function start() {
+    money = +prompt('Ваш бюджет на месяц?', '');
     time = prompt('Введите дату в формате YYYY-MM-DD', '');
+
+    while(isNaN(money) || money == "" || money == null ) {
+        money = +prompt('Ваш бюджет на месяц?', '');
+    }
+}
+start();
+
+
 
 let appData = {
     budget: money,
-    timeData: time,
     expenses: {},
     optionalExpenses: '',
     income: [],
-    savings: false
+    timeData: time,
+    savings: true
 };
 
-let question1 = prompt("Введите обязательную статью расходов в этом месяце", ''),
-    question2 = prompt("Во сколько обойдется?", ''),
-    question3 = prompt("Введите обязательную статью расходов в этом месяце", ''),
-    question4 = prompt("Во сколько обойдется?", '');
 
-    appData.expenses.question1 = question2;
-    appData.expenses.question3 = question4;
+function chooseExpenses() {
+    for ( let i = 0; i < 2; i++) {
+        let a = prompt("Введите обязательную статью расходов в этом месяце", ''),
+            b = prompt("Во сколько обойдется?", '');
+        
+        if ((typeof(a)) === 'string' && (typeof(a)) != null &&  (typeof(b)) != null
+            && a != '' && b != '' && a.length < 50) {
+            console.log("done");
+            appData.expenses[a] = b;
+        } else {
+            i = i - 1;
+        }
+    };
+}
+chooseExpenses();
 
 
+appData.moneyPerDay = (appData.budget/30).toFixed();
 
-alert("Ваш бюджет на день составляет - " + appData.budget/30);
+alert("Ежедневный бюджет :" + appData.moneyPerDay);
 
-console.log(appData.expenses);
+if(appData.moneyPerDay < 100 ) {
+    console.log("Минимальный уровень достатка")
+} else if ( appData.moneyPerDay > 100 && appData.moneyPerDay < 2000) {
+    console.log("Средний уровень достатка");
+
+}else if ( appData.moneyPerDay > 2000){
+    console.log("Высокий уровень достатка");
+}else {
+    console.log("Произошла ошибка")
+}
+
+function checkSavings() {
+    if (appData.savings == true) {
+        let save = +prompt("Какова сумма накоплений?"),
+            precent = +prompt("Под какой процент?");
+
+        appData.monthIncome = (save/100/12*precent).toFixed();
+        alert("Доход в месяц с вашего депозита :" + appData.monthIncome);
+    }
+}
+checkSavings();
  
