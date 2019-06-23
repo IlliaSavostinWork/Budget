@@ -21,9 +21,18 @@ let start = document.getElementById('start'),
     yearValue = document.querySelector('.year-value'),
     monthValue = document.querySelector('.month-value'),
     dayValue = document.querySelector('.day-value');
+    
+    // expWrapper = document.querySelector('.expenses-wrapper'),
+    // addItem = document.querySelector('.add-item-btn');
 
-    let money,time;
- 
+    let money,time,expvalue;
+    
+    // addItem.addEventListener('click', function(){
+    //     let item = document.createElement('div');
+    //     item.innerHTML = '<input class="expenses-item" type="text" id="expenses" placeholder="Наименование"> <input class="expenses-item" type="text" id="expenses" placeholder="Цена">';
+    //     expWrapper.insertBefore(item, expensesItemBtn);
+    //     return item;
+    // });
 
     start.addEventListener('click', function(){
         time = prompt('Введите дату в формате YYYY-MM-DD', '');
@@ -61,6 +70,7 @@ let start = document.getElementById('start'),
             }
         };
         expensesValue.textContent = sum;
+        appData.expvaluesum = sum;
     });
 
     optionalexpensesBtn.addEventListener('click', function() {
@@ -76,8 +86,12 @@ let start = document.getElementById('start'),
     countBudgetBtn.addEventListener('click', function(){
 
         if(appData.budget != undefined){
-
-            appData.moneyPerDay = (appData.budget/30).toFixed();
+            if(appData.expvaluesum !=undefined){
+                appData.moneyPerDay = ((appData.budget-appData.expvaluesum)/30).toFixed();
+            }else {
+                    appData.moneyPerDay = (appData.budget/30).toFixed();
+            }
+            
             daybudgetValue.textContent = appData.moneyPerDay;
     
             if(appData.moneyPerDay < 100 ) {
@@ -136,6 +150,7 @@ let start = document.getElementById('start'),
 
     let appData = {
         budget: money,
+        expvaluesum: undefined,
         expenses: {},
         optionalExpenses: {},
         income: [],
